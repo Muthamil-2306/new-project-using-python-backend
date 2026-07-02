@@ -1,12 +1,20 @@
+import os
 from fastapi import FastAPI, Request
 from fastapi.templating import Jinja2Templates
-import os
+from fastapi.responses import JSONResponse
+from supabase import create_client
+
+# Read environment variables
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+SUPABASE_KEY = os.getenv("SUPABASE_KEY")
+
+# Create Supabase client
+supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 app = FastAPI()
+templates = Jinja2Templates(directory=".")
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-templates = Jinja2Templates(directory=BASE_DIR)  # look in root
-
+# Example in‑memory store
 store = {}
 
 @app.get("/")
@@ -35,3 +43,12 @@ def delete(key: str):
 @app.get("/ui")
 def ui(request: Request):
     return templates.TemplateResponse("ui.html", {"request": request})
+
+# ✅ Test Supabase connection
+@app.get("/test-supabase")
+def test_supabase():
+    try:
+        data = supabase.table("your_table_name").select("*").limit(1).execute()
+        return JSONResponse(content={"success": True, "data": data.data})
+    except Exception as e:
+        return JSONResponse(content={"success": False, "error": str(e)})
