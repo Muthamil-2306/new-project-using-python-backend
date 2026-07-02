@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>FastAPI Store UI</title>
+</head>
+<body>
+    <h1>FastAPI Key-Value Store</h1>
+    <input id="key" placeholder="Key">
+    <input id="value" placeholder="Value">
+    <br>
+    <button onclick="insert()">Insert</button>
+    <button onclick="update()">Update</button>
+    <button onclick="del()">Delete</button>
+    <button onclick="getAll()">Get All</button>
+    <pre id="output"></pre>
+
+    <script>
+        async function insert() {
+            let key = document.getElementById("key").value;
+            let value = document.getElementById("value").value;
+            let res = await fetch(`/inserting?key=${key}&value=${value}`, {method: "POST"});
+            document.getElementById("output").innerText = JSON.stringify(await res.json(), null, 2);
+        }
+        async function update() {
+            let key = document.getElementById("key").value;
+            let value = document.getElementById("value").value;
+            let res = await fetch(`/updating?key=${key}&value=${value}`, {method: "PUT"});
+            document.getElementById("output").innerText = JSON.stringify(await res.json(), null, 2);
+        }
+        async function del() {
+            let key = document.getElementById("key").value;
+            let res = await fetch(`/deleting?key=${key}`, {method: "DELETE"});
+            document.getElementById("output").innerText = JSON.stringify(await res.json(), null, 2);
+        }
+        async function getAll() {
+            let res = await fetch(`/`);
+            document.getElementById("output").innerText = JSON.stringify(await res.json(), null, 2);
+        }
+    </script>
+</body>
+</html>

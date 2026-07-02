@@ -1,0 +1,22 @@
+# Core validation
+pydantic-core==2.46.4
+pydantic==2.7.4
+typing-extensions==4.12.2
+
+# Data analysis
+pandas==2.2.2
+openpyxl==3.1.5
+numpy==1.26.4
+matplotlib==3.9.1
+
+# Web development
+fastapi==0.111.0
+uvicorn==0.30.1
+jinja2==3.1.4
+
+# Backend / database
+supabase==2.5.0
+python-dotenv==1.0.1
+
+# Deployment helpers
+requests==2.32.3
