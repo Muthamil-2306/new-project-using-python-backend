@@ -1,20 +1,21 @@
 import os
+from dotenv import load_dotenv
 from fastapi import FastAPI, Request
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import JSONResponse
 from supabase import create_client
 
-# Read environment variables
+# ✅ Load environment variables
+load_dotenv()
+
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY")
 
-# Create Supabase client
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 app = FastAPI()
 templates = Jinja2Templates(directory=".")
 
-# Example in‑memory store
 store = {}
 
 @app.get("/")
@@ -44,7 +45,6 @@ def delete(key: str):
 def ui(request: Request):
     return templates.TemplateResponse("ui.html", {"request": request})
 
-# ✅ Test Supabase connection
 @app.get("/test-supabase")
 def test_supabase():
     try:
